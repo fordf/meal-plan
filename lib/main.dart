@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:meal_plan/data/dummy_data.dart';
 
 import 'package:meal_plan/screens/categories.dart';
 
@@ -23,7 +24,7 @@ class MealyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
-      home: CategoriesScreen(),
+      home: const CategoriesScreen(),
     );
   }
 }
