@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:meal_plan/models/category.dart';
 import 'package:meal_plan/models/meal.dart';
 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen({super.key, required this.categoryTitle, required this.meals});
+  const MealsScreen({super.key, required this.category, required this.meals});
 
-  final String categoryTitle;
+  final Category category;
   final List<Meal> meals;
 
   @override
@@ -12,15 +13,15 @@ class MealsScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(categoryTitle),
+        title: Text(category.title),
       ),
       body: meals.isEmpty
           ? Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('There are no meals in this category!',
-                      style: theme.textTheme.bodyLarge!
+                  Text('Ope! No meals yet!',
+                      style: theme.textTheme.headlineLarge!
                           .copyWith(color: theme.colorScheme.onSurface)),
                   const SizedBox(
                     height: 16,
@@ -42,13 +43,17 @@ class MealsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       gradient: LinearGradient(
                         colors: [
-                          theme.colorScheme.shadow,
-                          if (index % 2 == 0)
-                            theme.colorScheme.primaryContainer
-                          else
-                            theme.colorScheme.secondaryContainer,
-                          theme.colorScheme.shadow
+                          category.color.withOpacity(.6),
+                          category.color.withOpacity(.2),
+                          // category.color.withOpacity(.5),
+                          // theme.colorScheme.shadow,
+                          // if (index % 2 == 0)
+                          //   theme.colorScheme.primaryContainer
+                          // else
+                          //   theme.colorScheme.onPrimary,
                         ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight
                       ),
                     ),
                     child: Row(
@@ -59,14 +64,18 @@ class MealsScreen extends StatelessWidget {
                         ),
                         Image.network(
                           meals[index].imageUrl,
-                          height: 60,
-                          width: 60,
+                          height: 80,
+                          width: 80,
                         ),
-                        const Spacer(),
-                        Text(
-                          meals[index].title,
-                          style: theme.textTheme.titleMedium!.copyWith(
-                            color: theme.colorScheme.onSurface,
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: Text(
+                            meals[index].title,
+                            softWrap: true,
+                            style: theme.textTheme.titleLarge!.copyWith(
+                              color: theme.colorScheme.onSurface,
+                              
+                            ),
                           ),
                         ),
                         const SizedBox(

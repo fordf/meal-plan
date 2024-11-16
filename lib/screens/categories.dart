@@ -15,7 +15,7 @@ class CategoriesScreen extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (ctx) =>
-                MealsScreen(categoryTitle: category.title, meals: meals)));
+                MealsScreen(category: category, meals: meals)));
   }
 
   @override

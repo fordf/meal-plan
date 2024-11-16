@@ -4,8 +4,10 @@ Not another meal planning app....
 
 ## Notes
 
-New Widgets:
+New Stuff:
 
 - `GridView`
 - `GestureDetector`
 - `InkWell`
+- `MaterialPageRoute`
+- `Navigator.push`
