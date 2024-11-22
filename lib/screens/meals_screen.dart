@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:meal_plan/models/category.dart';
 import 'package:meal_plan/models/meal.dart';
 import 'package:meal_plan/screens/meal_screen.dart';
 import 'package:meal_plan/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen({super.key, required this.category, required this.meals});
+  const MealsScreen({super.key, required this.title, required this.meals});
 
-  final Category category;
+  final String title;
   final List<Meal> meals;
 
   void _selectMeal({required BuildContext context, required Meal meal}) {
@@ -20,7 +19,7 @@ class MealsScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(category.title),
+        title: Text(title),
       ),
       body: meals.isEmpty
           ? Center(
