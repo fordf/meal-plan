@@ -4,22 +4,34 @@ import 'package:meal_plan/screens/meal_screen.dart';
 import 'package:meal_plan/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen({super.key, required this.title, required this.meals});
+  const MealsScreen(
+      {super.key,
+      this.appBarTitle,
+      required this.meals,
+      required this.onToggleFavorited});
 
-  final String title;
+  final String? appBarTitle;
   final List<Meal> meals;
+  final void Function(Meal meal) onToggleFavorited;
 
   void _selectMeal({required BuildContext context, required Meal meal}) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (ctx) => MealScreen(meal: meal)));
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => MealScreen(
+          meal: meal,
+          onToggleFavorited: onToggleFavorited,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
+      appBar: appBarTitle == null ? null : AppBar(
+        title: Text(appBarTitle!),
       ),
       body: meals.isEmpty
           ? Center(
