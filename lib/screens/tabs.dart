@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:meal_plan/data/dummy_data.dart';
 import 'package:meal_plan/models/meal.dart';
 
 import 'package:meal_plan/screens/categories_screen.dart';
 import 'package:meal_plan/screens/filters.dart';
 import 'package:meal_plan/screens/meals_screen.dart';
 import 'package:meal_plan/widgets/drawer.dart';
+
+class Filter {
+  bool glutenFree = false;
+  bool lactoseFree = false;
+  bool vegetarian = false;
+  bool vegan = false;
+
+  bool passesFilter(Meal meal) {
+    if (glutenFree && !meal.isGlutenFree) return false;
+    if (lactoseFree && !meal.isLactoseFree) return false;
+    if (vegetarian && !meal.isVegetarian) return false;
+    if (vegan && !meal.isVegan) return false;
+    return true;
+  }
+}
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -18,15 +34,17 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int selectedPageIndex = 0;
   final List<Meal> favoriteMeals = [];
+  Filter filter = Filter();
 
-  void selectDrawerScreen(String identifier) {
+  void selectDrawerScreen(String identifier) async {
     Navigator.of(context).pop();
     if (identifier == 'Filters') {
-      Navigator.of(context).push(
+      final filterResult = await Navigator.of(context).push<Filter>(
         MaterialPageRoute(
-          builder: (ctx) => const FiltersScreen(),
+          builder: (ctx) => FiltersScreen(filter: filter),
         ),
       );
+      setState(() {});
     }
   }
 
@@ -49,12 +67,16 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget activeScreen = CategoriesScreen(
-      onToggleFavorited: toggleMealFavorited,
-    );
-    String appBarTitle = 'Pick a Category';
+    late final Widget activeScreen;
+    late final String appBarTitle;
 
-    if (selectedPageIndex == 1) {
+    if (selectedPageIndex == 0) {
+      activeScreen = CategoriesScreen(
+        onToggleFavorited: toggleMealFavorited,
+        filteredMeals: dummyMeals.where(filter.passesFilter).toList(),
+      );
+      appBarTitle = 'Pick a Category';
+    } else {
       activeScreen = MealsScreen(
         meals: favoriteMeals,
         onToggleFavorited: toggleMealFavorited,

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-// import 'package:meal_plan/screens/tabs.dart';
-// import 'package:meal_plan/widgets/drawer.dart';
+import 'package:meal_plan/widgets/switch_tile.dart';
+import 'package:meal_plan/screens/tabs.dart';
 
 class FiltersScreen extends StatefulWidget {
-  const FiltersScreen({super.key});
+  const FiltersScreen({super.key, required this.filter});
+
+  final Filter filter;
 
   @override
   State<FiltersScreen> createState() {
@@ -12,44 +14,59 @@ class FiltersScreen extends StatefulWidget {
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
-  bool glutenFree = false;
 
-  // void onSelectDrawerTile(String identifier) {
-  //   Navigator.of(context).pop();
-  //   if (identifier == 'Meals') {
-  //     Navigator.of(context).pushReplacement(
-  //       MaterialPageRoute(builder: (ctx) => const TabsScreen())
-  //     );
-  //   }
-  // }
-  
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Filters'),
       ),
-      // drawer: MealyDrawer(onSelectDrawerTile: onSelectDrawerTile),
-      body: Column(
-        children: [
-          SwitchListTile(
-              value: glutenFree,
+      body: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) return;
+          Navigator.of(context).pop(widget.filter);
+        },
+        child: Column(
+          children: [
+            SwitchTile(
+              title: 'Gluten-free',
               onChanged: (switchOn) {
                 setState(() {
-                  glutenFree = switchOn;
+                  widget.filter.glutenFree = switchOn;
                 });
               },
-              title: Text(
-                'Gluten-free',
-                style: theme.textTheme.titleLarge!.copyWith(
-                  color: theme.colorScheme.onSurface,
-                ),
-              ),
-              activeColor: theme.colorScheme.tertiary,
-              contentPadding: const EdgeInsets.only(left: 34, right: 22),
+              value: widget.filter.glutenFree,
             ),
-        ],
+            SwitchTile(
+              title: 'Lactose-free',
+              onChanged: (switchOn) {
+                setState(() {
+                  widget.filter.lactoseFree = switchOn;
+                });
+              },
+              value: widget.filter.lactoseFree,
+            ),
+            SwitchTile(
+              title: 'Vegetarian',
+              onChanged: (switchOn) {
+                setState(() {
+                  widget.filter.vegetarian = switchOn;
+                });
+              },
+              value: widget.filter.vegetarian,
+            ),
+            SwitchTile(
+              title: 'Vegan',
+              onChanged: (switchOn) {
+                setState(() {
+                  widget.filter.vegan = switchOn;
+                });
+              },
+              value: widget.filter.vegan,
+            ),
+          ],
+        ),
       ),
     );
   }
