@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:meal_plan/data/dummy_data.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meal_plan/models/meal.dart';
+import 'package:meal_plan/providers/meals_provider.dart';
 
 import 'package:meal_plan/screens/categories_screen.dart';
 import 'package:meal_plan/screens/filters.dart';
@@ -22,16 +23,16 @@ class Filter {
   }
 }
 
-class TabsScreen extends StatefulWidget {
+class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
 
   @override
-  State<TabsScreen> createState() {
+  ConsumerState<TabsScreen> createState() {
     return _TabsScreenState();
   }
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+class _TabsScreenState extends ConsumerState<TabsScreen> {
   int selectedPageIndex = 0;
   final List<Meal> favoriteMeals = [];
   Filter filter = Filter();
@@ -67,13 +68,14 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final meals = ref.watch(mealsProvider);
     late final Widget activeScreen;
     late final String appBarTitle;
 
     if (selectedPageIndex == 0) {
       activeScreen = CategoriesScreen(
         onToggleFavorited: toggleMealFavorited,
-        filteredMeals: dummyMeals.where(filter.passesFilter).toList(),
+        filteredMeals: meals.where(filter.passesFilter).toList(),
       );
       appBarTitle = 'Pick a Category';
     } else {

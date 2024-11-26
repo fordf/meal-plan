@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:meal_plan/screens/tabs.dart';
@@ -12,7 +13,11 @@ final theme = ThemeData(
 );
 
 void main() {
-  runApp(const MealyApp());
+  runApp(
+    const ProviderScope(
+      child: MealyApp(),
+    ),
+  );
 }
 
 class MealyApp extends StatelessWidget {
