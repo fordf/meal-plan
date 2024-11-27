@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meal_plan/providers/favorites_provider.dart';
-import 'package:meal_plan/providers/filters_provider.dart';
-import 'package:meal_plan/providers/meals_provider.dart';
 import 'package:meal_plan/screens/categories_screen.dart';
 import 'package:meal_plan/screens/filters_screen.dart';
 import 'package:meal_plan/screens/meals_screen.dart';
@@ -40,15 +38,11 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final meals = ref.watch(mealsProvider);
-    final filter = ref.watch(filtersProvider);
     late final Widget activeScreen;
     late final String appBarTitle;
 
     if (selectedPageIndex == 0) {
-      activeScreen = CategoriesScreen(
-        filteredMeals: meals.where(filter.passesFilter).toList(),
-      );
+      activeScreen = const CategoriesScreen();
       appBarTitle = 'Pick a Category';
     } else {
       activeScreen = MealsScreen(

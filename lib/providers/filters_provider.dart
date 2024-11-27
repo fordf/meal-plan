@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meal_plan/models/meal.dart';
+import 'package:meal_plan/providers/meals_provider.dart';
 
 class Filter {
   bool glutenFree;
@@ -44,3 +45,9 @@ class FiltersNotifier extends StateNotifier<Filter> {
 final filtersProvider = StateNotifierProvider<FiltersNotifier, Filter>(
   (ref) => FiltersNotifier(),
 );
+
+final filteredMealsProvider = Provider<List<Meal>>((ref) {
+  final meals = ref.watch(mealsProvider);
+  final filter = ref.watch(filtersProvider);
+  return meals.where(filter.passesFilter).toList();
+});
