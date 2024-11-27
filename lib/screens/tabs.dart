@@ -1,27 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:meal_plan/models/meal.dart';
-import 'package:meal_plan/providers/meals_provider.dart';
 
+import 'package:meal_plan/providers/favorites_provider.dart';
+import 'package:meal_plan/providers/filters_provider.dart';
+import 'package:meal_plan/providers/meals_provider.dart';
 import 'package:meal_plan/screens/categories_screen.dart';
 import 'package:meal_plan/screens/filters.dart';
 import 'package:meal_plan/screens/meals_screen.dart';
 import 'package:meal_plan/widgets/drawer.dart';
-
-class Filter {
-  bool glutenFree = false;
-  bool lactoseFree = false;
-  bool vegetarian = false;
-  bool vegan = false;
-
-  bool passesFilter(Meal meal) {
-    if (glutenFree && !meal.isGlutenFree) return false;
-    if (lactoseFree && !meal.isLactoseFree) return false;
-    if (vegetarian && !meal.isVegetarian) return false;
-    if (vegan && !meal.isVegan) return false;
-    return true;
-  }
-}
 
 class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
@@ -34,18 +20,15 @@ class TabsScreen extends ConsumerStatefulWidget {
 
 class _TabsScreenState extends ConsumerState<TabsScreen> {
   int selectedPageIndex = 0;
-  final List<Meal> favoriteMeals = [];
-  Filter filter = Filter();
 
   void selectDrawerScreen(String identifier) async {
     Navigator.of(context).pop();
     if (identifier == 'Filters') {
-      final filterResult = await Navigator.of(context).push<Filter>(
+      await Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (ctx) => FiltersScreen(filter: filter),
+          builder: (ctx) => const FiltersScreen(),
         ),
       );
-      setState(() {});
     }
   }
 
@@ -55,33 +38,21 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     });
   }
 
-  void toggleMealFavorited(Meal meal) {
-    final index = favoriteMeals.indexOf(meal);
-    setState(() {
-      if (index == -1) {
-        favoriteMeals.add(meal);
-      } else {
-        favoriteMeals.removeAt(index);
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final meals = ref.watch(mealsProvider);
+    final filter = ref.watch(filtersProvider);
     late final Widget activeScreen;
     late final String appBarTitle;
 
     if (selectedPageIndex == 0) {
       activeScreen = CategoriesScreen(
-        onToggleFavorited: toggleMealFavorited,
         filteredMeals: meals.where(filter.passesFilter).toList(),
       );
       appBarTitle = 'Pick a Category';
     } else {
       activeScreen = MealsScreen(
-        meals: favoriteMeals,
-        onToggleFavorited: toggleMealFavorited,
+        meals: ref.watch(favoritesProvider),
       );
       appBarTitle = 'Favorites';
     }

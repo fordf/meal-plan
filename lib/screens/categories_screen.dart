@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meal_plan/data/dummy_data.dart';
 import 'package:meal_plan/models/category.dart';
 import 'package:meal_plan/models/meal.dart';
 import 'package:meal_plan/screens/meals_screen.dart';
 import 'package:meal_plan/widgets/category_grid_item.dart';
 
-class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({
-    super.key,
-    required this.onToggleFavorited,
-    required this.filteredMeals
-  });
+class CategoriesScreen extends ConsumerWidget {
+  const CategoriesScreen({super.key, required this.filteredMeals});
 
-  final void Function(Meal meal) onToggleFavorited;
   final List<Meal> filteredMeals;
 
-  void _selectCategory(
-      {required BuildContext context, required Category category}) {
+  void _selectCategory({
+    required BuildContext context,
+    required Category category,
+  }) {
     final meals = filteredMeals
         .where((meal) => meal.categories.contains(category.id))
         .toList();
@@ -26,14 +24,13 @@ class CategoriesScreen extends StatelessWidget {
         builder: (ctx) => MealsScreen(
           appBarTitle: category.title,
           meals: meals,
-          onToggleFavorited: onToggleFavorited,
         ),
       ),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GridView(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
