@@ -14,20 +14,6 @@ class Filter {
     this.glutenFree = false,
   });
 
-  Filter copyWith({
-    bool? lactoseFree,
-    bool? vegetarian,
-    bool? vegan,
-    bool? glutenFree,
-  }) {
-    return Filter(
-      lactoseFree: lactoseFree ?? this.lactoseFree,
-      vegetarian: vegetarian ?? this.vegetarian,
-      vegan: vegan ?? this.vegan,
-      glutenFree: glutenFree ?? this.glutenFree,
-    );
-  }
-
   bool passesFilter(Meal meal) {
     if (glutenFree && !meal.isGlutenFree) return false;
     if (lactoseFree && !meal.isLactoseFree) return false;
@@ -40,8 +26,18 @@ class Filter {
 class FiltersNotifier extends StateNotifier<Filter> {
   FiltersNotifier() : super(Filter());
 
-  void setFilter(Filter newFilter) {
-    state = newFilter;
+  void setFilter({
+    bool? lactoseFree,
+    bool? vegetarian,
+    bool? vegan,
+    bool? glutenFree,
+  }) {
+    state = Filter(
+      lactoseFree: lactoseFree ?? state.lactoseFree,
+      vegetarian: vegetarian ?? state.vegetarian,
+      vegan: vegan ?? state.vegan,
+      glutenFree: glutenFree ?? state.glutenFree,
+    );
   }
 }
 

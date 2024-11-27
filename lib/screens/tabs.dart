@@ -5,7 +5,7 @@ import 'package:meal_plan/providers/favorites_provider.dart';
 import 'package:meal_plan/providers/filters_provider.dart';
 import 'package:meal_plan/providers/meals_provider.dart';
 import 'package:meal_plan/screens/categories_screen.dart';
-import 'package:meal_plan/screens/filters.dart';
+import 'package:meal_plan/screens/filters_screen.dart';
 import 'package:meal_plan/screens/meals_screen.dart';
 import 'package:meal_plan/widgets/drawer.dart';
 
