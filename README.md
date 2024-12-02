@@ -23,3 +23,6 @@ Built with Flutter as part of Maximilian Schwarzmüller's Udemy course:
 - `SwitchListTile`
 - `PopScope`
     - can capture pop events to pass data to whoever `push`ed the current screen, as a future.
+- `Provider`
+- `StateNotifier`
+- `StateNotifierProvider`
