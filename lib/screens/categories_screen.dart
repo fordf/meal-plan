@@ -1,21 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:meal_plan/data/dummy_data.dart';
 import 'package:meal_plan/models/category.dart';
 import 'package:meal_plan/models/meal.dart';
-import 'package:meal_plan/providers/filters_provider.dart';
 import 'package:meal_plan/screens/meals_screen.dart';
 import 'package:meal_plan/widgets/category_grid_item.dart';
 
-class CategoriesScreen extends ConsumerWidget {
-  const CategoriesScreen({super.key});
+class CategoriesScreen extends StatefulWidget {
+  const CategoriesScreen({super.key, required this.filteredMeals});
+
+  final List<Meal> filteredMeals;
+
+  @override
+  State<StatefulWidget> createState() => _CategoriesScreenState();
+}
+
+class _CategoriesScreenState extends State<CategoriesScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
 
   void _selectCategory({
     required BuildContext context,
     required Category category,
-    required List<Meal> filteredMeals,
   }) {
-    final meals = filteredMeals
+    final meals = widget.filteredMeals
         .where((meal) => meal.categories.contains(category.id))
         .toList();
     Navigator.push(
@@ -30,7 +53,7 @@ class CategoriesScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return GridView(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -46,7 +69,6 @@ class CategoriesScreen extends ConsumerWidget {
               _selectCategory(
                 context: context,
                 category: category,
-                filteredMeals: ref.watch(filteredMealsProvider),
               );
             },
           )

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meal_plan/providers/favorites_provider.dart';
+import 'package:meal_plan/providers/filters_provider.dart';
 import 'package:meal_plan/screens/categories_screen.dart';
 import 'package:meal_plan/screens/filters_screen.dart';
 import 'package:meal_plan/screens/meals_screen.dart';
@@ -42,7 +43,9 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     late final String appBarTitle;
 
     if (selectedPageIndex == 0) {
-      activeScreen = const CategoriesScreen();
+      activeScreen = CategoriesScreen(
+        filteredMeals: ref.watch(filteredMealsProvider)
+      );
       appBarTitle = 'Pick a Category';
     } else {
       activeScreen = MealsScreen(

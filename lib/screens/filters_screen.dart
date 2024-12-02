@@ -26,7 +26,7 @@ class FiltersScreen extends ConsumerWidget {
             SwitchTile(
               title: 'Lactose-free',
               onChanged: (switchOn) {
-                ref.read(filtersProvider.notifier).setFilter(lactoseFree: switchOn);;
+                ref.read(filtersProvider.notifier).setFilter(lactoseFree: switchOn);
               },
               value: filter.lactoseFree,
             ),
