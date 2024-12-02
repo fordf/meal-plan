@@ -26,6 +26,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
+    animationController.forward();
   }
 
   @override
@@ -54,25 +55,32 @@ class _CategoriesScreenState extends State<CategoriesScreen>
 
   @override
   Widget build(BuildContext context) {
-    return GridView(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 3 / 2,
-        crossAxisSpacing: 20,
-        mainAxisSpacing: 20,
+    return AnimatedBuilder(
+      animation: animationController,
+      child: GridView(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 3 / 2,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+        ),
+        children: [
+          for (final category in availableCategories)
+            CategoryGridItem(
+              category: category,
+              onTap: () {
+                _selectCategory(
+                  context: context,
+                  category: category,
+                );
+              },
+            )
+        ],
       ),
-      children: [
-        for (final category in availableCategories)
-          CategoryGridItem(
-            category: category,
-            onTap: () {
-              _selectCategory(
-                context: context,
-                category: category,
-              );
-            },
-          )
-      ],
+      builder: (ctx, child) => Padding(
+        padding: EdgeInsets.only(top: (1 - animationController.value) * 100),
+        child: child,
+      ),
     );
   }
 }

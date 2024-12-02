@@ -26,3 +26,6 @@ Built with Flutter as part of Maximilian Schwarzmüller's Udemy course:
 - `Provider`
 - `StateNotifier`
 - `StateNotifierProvider`
+- `AnimatedBuilder`
+- `AnimatedController`
+- `AnimatedController`
