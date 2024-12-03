@@ -16,6 +16,7 @@ class MealScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final isFavorite = ref.watch(favoritesProvider).contains(meal);
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
@@ -34,7 +35,17 @@ class MealScreen extends ConsumerWidget {
                 ),
               );
             },
-            icon: Icon(ref.watch(favoritesProvider).contains(meal) ? Icons.star : Icons.star_border),
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 400),
+              transitionBuilder: (child, animation) => RotationTransition(
+                turns: Tween<double>(begin: 0.8, end: 1).animate(animation),
+                child: child,
+              ),
+              child: Icon(
+                isFavorite ? Icons.star : Icons.star_border,
+                key: ValueKey(isFavorite),
+              ),
+            ),
           )
         ],
       ),

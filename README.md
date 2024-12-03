@@ -27,5 +27,6 @@ Built with Flutter as part of Maximilian Schwarzmüller's Udemy course:
 - `StateNotifier`
 - `StateNotifierProvider`
 - `AnimatedBuilder`
-- `AnimatedController`
-- `AnimatedController`
+- `AnimationController`
+- `AnimatedSwitcher`
+- `Tween`
