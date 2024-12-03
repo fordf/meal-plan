@@ -30,3 +30,4 @@ Built with Flutter as part of Maximilian Schwarzmüller's Udemy course:
 - `AnimationController`
 - `AnimatedSwitcher`
 - `Tween`
+- `Hero`
